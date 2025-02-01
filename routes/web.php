@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EmployeeController;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
@@ -20,10 +21,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route for Admin Dashboard
 Route::get('/admin/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
 
+// Employee resource routes (CRUD operations)
 Route::resource('employees', EmployeeController::class);
 
+// Logout route
+Route::post('/logout', function () {
+    Auth::logout();
+    return response()->json(['message' => 'Logged out']);
+})->name('logout');
+
+// Route for the "Add Employee" page
+Route::get('/employees/add', function () {
+    return view('admin.add-employee');
+})->name('employees.add');
+
 require __DIR__.'/auth.php';
-
-
