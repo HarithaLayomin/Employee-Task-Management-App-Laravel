@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,5 +37,14 @@ Route::post('/logout', function () {
 Route::get('/employees/add', function () {
     return view('admin.add-employee');
 })->name('employees.add');
+
+Route::middleware('auth:api')->group(function () {
+    // Get assigned tasks for the employee
+    Route::get('/employee/tasks', [TaskController::class, 'getAssignedTasks']);
+
+    // Update task status (pending/completed)
+    Route::patch('/employee/tasks/{taskId}/update-status', [TaskController::class, 'updateStatus']);
+});
+
 
 require __DIR__.'/auth.php';

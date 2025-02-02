@@ -13,12 +13,14 @@ Route::get('/test', function () {
 
 // Public routes for employees and tasks
 Route::apiResource('employees', EmployeeController::class);
-Route::apiResource('tasks', TaskController::class);
+Route::apiResource('tasks', TaskController::class); 
 
-//top employees
+// Top employees route
 Route::get('/employees/top', [TopEmployeeController::class, 'index']);
 
 // User route for testing (requires authentication)
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
